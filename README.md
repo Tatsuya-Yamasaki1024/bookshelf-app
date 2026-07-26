@@ -7,16 +7,17 @@
 ## ER図
 
 erDiagram
-users {
-bigint_unsigned id PK
-varchar_255 name
-varchar_255 email UK
-timestamp email_verified_at
-varchar_255 password
-varchar_100 remember_token
-timestamp created_at
-timestamp updated_at
-}
+
+    users {
+        bigint_unsigned id PK
+        varchar_255 name
+        varchar_255 email UK
+        timestamp email_verified_at
+        varchar_255 password
+        varchar_100 remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
 
     books {
         bigint_unsigned id PK
