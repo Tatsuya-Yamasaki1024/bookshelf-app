@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -18,7 +17,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('title');
             $table->string('author');
-            $table->string('isbn_13', 13)->unique();
+            $table->string('isbn', 13)->unique();
             $table->date('publication_date');
             $table->text('description')->nullable();
             $table->string('image_url')->nullable();

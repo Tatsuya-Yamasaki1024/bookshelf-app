@@ -24,7 +24,7 @@ erDiagram
         bigint_unsigned user_id FK
         varchar_255 title
         varchar_255 author
-        varchar_13 isbn_13 UK
+        varchar_13 isbn UK
         date publication_date
         text description
         varchar_255 image_url
