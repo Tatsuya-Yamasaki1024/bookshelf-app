@@ -170,8 +170,21 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'name' => [
+            'required' => ':attributeを入力してください。',
+            'max' => ':attributeは255文字以内で入力してください。',
+
+        ],
+        'email' => [
+            'required' => ':attributeを入力してください。',
+            'email' => ':attributeは有効なメールアドレス形式で入力してください。',
+            'unique' => 'その:attributeは既に登録されています。',
+        ],
+
+        'password' => [
+            'required' => ':attributeを入力してください。',
+            'confirmed' => ':attributeが一致しません。',
+            'min' => ':attributeは8文字以上で入力してください。',
         ],
     ],
 
@@ -186,6 +199,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => '名前',
+        'email' => 'メールアドレス',
+        'password' => 'パスワード',
 
+    ],
 ];
