@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReviewRequest;
-use App\Models\Review;
 use App\Models\Book;
-
+use App\Models\Review;
 
 class ReviewController extends Controller
 {
@@ -20,7 +19,6 @@ class ReviewController extends Controller
         return redirect()->route('books.show', $book)
             ->with('success', 'レビューを投稿しました。');
     }
-
 
     public function edit(Review $review)
     {

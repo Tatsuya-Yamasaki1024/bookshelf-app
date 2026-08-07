@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use App\Models\ReviewLike;
 
-
 class ReviewLikeController extends Controller
 {
     public function store(Review $review)
@@ -18,7 +17,6 @@ class ReviewLikeController extends Controller
         return back()
             ->with('success', 'レビューにいいねしました。');
     }
-
 
     public function destroy(Review $review)
     {
