@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ReviewLikeController;
 use App\Http\Controllers\FavoriteController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,4 +54,11 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/books/{book}/favorites', [FavoriteController::class, 'destroy'])
         ->name('favorites.destroy');
+
+    //レビューいいね
+    Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'store'])
+        ->name('review_likes.store');
+
+    Route::delete('/reviews/{review}/like', [ReviewLikeController::class, 'destroy'])
+        ->name('review_likes.destroy');
 });
