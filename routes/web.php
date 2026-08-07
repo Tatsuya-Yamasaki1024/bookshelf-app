@@ -1,10 +1,11 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\RankingController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReviewLikeController;
-use App\Http\Controllers\FavoriteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,10 @@ use Illuminate\Support\Facades\Route;
 // 書籍一覧・詳細（ゲストアクセス可）
 Route::resource('books', BookController::class)
     ->only(['index', 'show']);
+
+// ランキング
+Route::get('/ranking', [RankingController::class, 'index'])
+    ->name('ranking.index');
 
 // 認証必須
 Route::middleware('auth')->group(function () {
@@ -45,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])
         ->name('reviews.destroy');
 
-    //お気に入り
+    // お気に入り
     Route::get('/favorites', [FavoriteController::class, 'index'])
         ->name('favorites.index');
 
@@ -55,7 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/books/{book}/favorites', [FavoriteController::class, 'destroy'])
         ->name('favorites.destroy');
 
-    //レビューいいね
+    // レビューいいね
     Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'store'])
         ->name('review_likes.store');
 
