@@ -12,11 +12,11 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        $favorites = Favorite::with('book')
-            ->where('user_id', auth()->id())
+        $books = auth()->user()
+            ->favorites()
             ->paginate(10);
 
-        return view('favorites.index', compact('favorites'));
+        return view('favorites.index', compact('books'));
     }
 
     /**

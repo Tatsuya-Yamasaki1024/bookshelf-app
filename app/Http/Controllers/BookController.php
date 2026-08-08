@@ -39,6 +39,8 @@ class BookController extends Controller
         $genreIds = $validated['genres'];
         unset($validated['genres']);
 
+        $validated['user_id'] = auth()->id();
+
         $book = Book::create($validated);
         $book->genres()->attach($genreIds);
 

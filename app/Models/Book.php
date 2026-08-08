@@ -16,7 +16,7 @@ class Book extends Model
         'isbn',
         'description',
         'image_url',
-        'publication_date',
+        'published_date',
     ];
 
     public function user()

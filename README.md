@@ -25,7 +25,7 @@ erDiagram
         varchar_255 title
         varchar_255 author
         varchar_13 isbn UK
-        date publication_date
+        date published_date
         text description
         varchar_255 image_url
         timestamp created_at

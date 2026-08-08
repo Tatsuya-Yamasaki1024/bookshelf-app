@@ -18,15 +18,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-// 書籍一覧・詳細（ゲストアクセス可）
-Route::resource('books', BookController::class)
-    ->only(['index', 'show']);
-
-// ランキング
-Route::get('/ranking', [RankingController::class, 'index'])
-    ->name('ranking.index');
-
 // 認証必須
 Route::middleware('auth')->group(function () {
 
@@ -67,3 +58,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/reviews/{review}/like', [ReviewLikeController::class, 'destroy'])
         ->name('review_likes.destroy');
 });
+
+// 書籍一覧・詳細（ゲストアクセス可）
+Route::resource('books', BookController::class)
+    ->only(['index', 'show']);
+
+// ランキング
+Route::get('/ranking', [RankingController::class, 'index'])
+    ->name('ranking.index');
