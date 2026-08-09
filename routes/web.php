@@ -6,6 +6,7 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ReviewLikeController;
+use App\Models\Book;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,18 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])
         ->name('favorites.index');
 
-    Route::post('/books/{book}/favorites', [FavoriteController::class, 'store'])
-        ->name('favorites.store');
-
-    Route::delete('/books/{book}/favorites', [FavoriteController::class, 'destroy'])
-        ->name('favorites.destroy');
+    Route::post('/books/{book}/favorites', [FavoriteController::class, 'toggle'])
+        ->name('favorites.toggle');
 
     // レビューいいね
-    Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'store'])
-        ->name('review_likes.store');
-
-    Route::delete('/reviews/{review}/like', [ReviewLikeController::class, 'destroy'])
-        ->name('review_likes.destroy');
+    Route::post('/reviews/{review}/like', [ReviewLikeController::class, 'toggle'])
+        ->name('reviews.like');
 });
 
 // 書籍一覧・詳細（ゲストアクセス可）
@@ -66,3 +61,11 @@ Route::resource('books', BookController::class)
 // ランキング
 Route::get('/ranking', [RankingController::class, 'index'])
     ->name('ranking.index');
+
+// ↓必要性確認中
+// 直接レビュー投稿のurlを踏んだ時(ログイン時→詳細,ゲスト→ログイン画面)
+Route::get('/books/{book}/reviews', function (Book $book) {
+    return auth()->check()
+        ? redirect()->route('books.show', $book)
+        : redirect()->route('login');
+})->name('reviews.create');
