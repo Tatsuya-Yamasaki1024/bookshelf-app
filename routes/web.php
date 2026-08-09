@@ -64,8 +64,9 @@ Route::get('/ranking', [RankingController::class, 'index'])
 
 // ↓必要性確認中
 // 直接レビュー投稿のurlを踏んだ時(ログイン時→詳細,ゲスト→ログイン画面)
-Route::get('/books/{book}/reviews', function (Book $book) {
+/*Route::get('/books/{book}/reviews', function (Book $book) {
     return auth()->check()
         ? redirect()->route('books.show', $book)
         : redirect()->route('login');
 })->name('reviews.create');
+*/
