@@ -10,6 +10,12 @@ class ReviewController extends Controller
 {
     public function store(ReviewRequest $request, Book $book)
     {
+        if ($book->reviews()->where('user_id', auth()->id())->exists()) {
+            return back()->withErrors([
+                'review' => 'この書籍にはすでにレビューを投稿しています。',
+            ]);
+        }
+
         Review::create([
             'book_id' => $book->id,
             'user_id' => auth()->id(),

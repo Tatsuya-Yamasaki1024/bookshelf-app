@@ -47,7 +47,8 @@ class StoreBookRequest extends FormRequest
             'isbn.digits' => '13桁のISBNを入力してください。',
             'isbn.unique' => 'そのISBNは既に登録されています。',
 
-            'published_date.required' => '出版日を選択してください。',
+            'published_date.required' => '出版日を入力してください。',
+            'published_date.date' => '出版日は正しい日付を入力してください。',
 
             'description.max' => '説明は1000文字以内で入力してください。',
 
