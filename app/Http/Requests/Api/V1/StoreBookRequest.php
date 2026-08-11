@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBookRequest extends FormRequest
@@ -18,11 +17,12 @@ class StoreBookRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'integer', 'exists:users,id'],
             'title' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255'],
             'isbn' => ['required', 'digits:13', 'unique:books,isbn'],
@@ -37,6 +37,9 @@ class StoreBookRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'user_id.required' => '登録者のユーザーIDを入力してください。',
+            'user_id.exists' => '指定されたユーザーは存在しません。',
+
             'title.required' => 'タイトルを入力してください。',
             'title.max' => 'タイトルは255文字以内で入力してください。',
 
