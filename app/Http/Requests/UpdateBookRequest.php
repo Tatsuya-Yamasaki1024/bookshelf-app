@@ -62,6 +62,7 @@ class UpdateBookRequest extends FormRequest
             'image_url.max' => '画像URLは255文字以内で入力してください。',
 
             'genres.required' => 'ジャンルを1つ以上選択してください。',
+            'genres.*.exists' => '指定されたジャンルは存在しません。',
         ];
     }
 }

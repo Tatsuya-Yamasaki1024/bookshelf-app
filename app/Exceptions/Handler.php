@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -21,10 +23,21 @@ class Handler extends ExceptionHandler
     /**
      * Register the exception handling callbacks for the application.
      */
+    protected function invalidJson($request, ValidationException $exception)
+    {
+        return response()->json([
+            'message' => '入力内容に誤りがあります。',
+            'errors' => $exception->errors(),
+        ], $exception->status);
+    }
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => '書籍が見つかりません。',
+                ], 404);
+            }
         });
     }
 }
