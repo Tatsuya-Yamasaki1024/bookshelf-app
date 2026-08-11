@@ -39,4 +39,3 @@ class IndexBookResource extends JsonResource
         ];
     }
 }
-
