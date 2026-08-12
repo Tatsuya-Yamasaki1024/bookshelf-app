@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Book;
-use App\Models\Genre;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,17 +27,5 @@ class BookFactory extends Factory
             'description' => fake()->sentence(),
             'image_url' => fake()->imageUrl(),
         ];
-    }
-
-    /**
-     * Configure the model factory.
-     */
-    public function configure(): static
-    {
-        return $this->afterCreating(function (Book $book) {
-            $genre = Genre::factory()->create();
-
-            $book->genres()->attach($genre);
-        });
     }
 }
