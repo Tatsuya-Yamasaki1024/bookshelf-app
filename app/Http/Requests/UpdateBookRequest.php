@@ -34,7 +34,7 @@ class UpdateBookRequest extends FormRequest
             ],
             'published_date' => ['required', 'date'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'image_url' => ['nullable', 'url', 'max:255'],
+            'image_url' => ['nullable', 'url', 'max:1000'],
             'genres' => ['required', 'array', 'min:1'],
             'genres.*' => ['integer', 'exists:genres,id'],
         ];
@@ -59,7 +59,7 @@ class UpdateBookRequest extends FormRequest
             'description.max' => '説明は1000文字以内で入力してください。',
 
             'image_url.url' => '画像URLは正しいURL形式で入力してください。',
-            'image_url.max' => '画像URLは255文字以内で入力してください。',
+            'image_url.max' => '画像URLは1000文字以内で入力してください。',
 
             'genres.required' => 'ジャンルを1つ以上選択してください。',
             'genres.*.exists' => '指定されたジャンルは存在しません。',
