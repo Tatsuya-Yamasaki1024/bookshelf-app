@@ -41,7 +41,6 @@ class BookTest extends TestCase
         $genre = Genre::factory()->create();
 
         $response = $this->actingAs($user)->post('/books', [
-            'user_id' => $user->id,
             'title' => 'テスト書籍',
             'author' => 'テスト著者',
             'isbn' => '1234567890123',
@@ -56,6 +55,11 @@ class BookTest extends TestCase
             'user_id' => $user->id,
             'title' => 'テスト書籍',
         ]);
+
+        $response = $this->actingAs($user)->get(
+            route('books.index')
+        );
+        $response->assertSee('テスト書籍');
     }
 
     // ログインユーザーが自身の登録した書籍を編集でき、書籍詳細画面に変更内容が反映される
@@ -89,6 +93,14 @@ class BookTest extends TestCase
             'user_id' => $user->id,
             'title' => '更新後のテスト書籍',
         ]);
+
+        $response = $this->actingAs($user)->get(
+            route('books.show', $book)
+        );
+
+        $response->assertSee('更新後のテスト書籍');
+        $response->assertSee('更新後のテスト著者');
+        $response->assertSee('更新後のテスト説明');
     }
 
     // ログインユーザーが自身の登録した書籍を削除でき、書籍・レビュー・お気に入りから削除される
