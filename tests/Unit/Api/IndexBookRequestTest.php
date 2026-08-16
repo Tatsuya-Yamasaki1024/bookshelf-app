@@ -14,7 +14,7 @@ class IndexBookRequestTest extends TestCase
 
     private function validator(array $data)
     {
-        $request = new IndexBookRequest();
+        $request = new IndexBookRequest;
 
         return Validator::make(
             $data,

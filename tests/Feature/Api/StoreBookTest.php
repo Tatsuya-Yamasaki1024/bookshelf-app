@@ -35,7 +35,6 @@ class StoreBookTest extends TestCase
 
         $response = $this->postJson('/api/v1/books', $data);
 
-
         $response->dump();
         $response->assertStatus(201);
 

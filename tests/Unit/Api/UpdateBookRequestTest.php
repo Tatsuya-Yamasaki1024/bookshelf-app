@@ -15,13 +15,12 @@ class UpdateBookRequestTest extends TestCase
 
     private function validator(array $data, Book $book)
     {
-        $request = new UpdateBookRequest();
+        $request = new UpdateBookRequest;
 
         $request->setRouteResolver(function () use ($book) {
-            return new class ($book) {
-                public function __construct(private Book $book)
-                {
-                }
+            return new class($book)
+            {
+                public function __construct(private Book $book) {}
 
                 public function parameter($param)
                 {
@@ -434,7 +433,7 @@ class UpdateBookRequestTest extends TestCase
     public function test_image_url_is_invalid_when_exceeds_255_characters()
     {
         $validData = $this->validData();
-        $validData['data']['image_url'] = 'https://example.com/' . str_repeat('a', 986);
+        $validData['data']['image_url'] = 'https://example.com/'.str_repeat('a', 986);
 
         $validator = $this->validator(
             $validData['data'],

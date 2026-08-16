@@ -74,7 +74,7 @@ class IndexBookTest extends TestCase
         $otherBook->genres()->attach($otherGenre);
 
         $response = $this->getJson(
-            '/api/v1/books?genre_id=' . $targetGenre->id
+            '/api/v1/books?genre_id='.$targetGenre->id
         );
 
         $response->assertOk()

@@ -16,7 +16,7 @@ class StoreBookRequestTest extends TestCase
 
     private function validator(array $data)
     {
-        $request = new StoreBookRequest();
+        $request = new StoreBookRequest;
 
         return Validator::make(
             $data,
@@ -371,7 +371,7 @@ class StoreBookRequestTest extends TestCase
     public function test_image_url_is_invalid_when_exceeds_1000_characters()
     {
         $data = $this->validData();
-        $data['image_url'] = 'https://' . str_repeat('a', 990) . '.com';
+        $data['image_url'] = 'https://'.str_repeat('a', 990).'.com';
 
         $validator = $this->validator($data);
 
