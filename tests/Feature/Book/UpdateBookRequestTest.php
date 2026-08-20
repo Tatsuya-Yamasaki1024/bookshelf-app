@@ -125,24 +125,6 @@ class UpdateBookRequestTest extends TestCase
         );
     }
 
-    // 書籍更新時にisbnが未入力の場合はバリデーションエラーになる
-    public function test_update_book_requires_isbn(): void
-    {
-        $genre = Genre::factory()->create();
-
-        $validator = $this->validator(
-            $this->basePayload($genre, [
-                'isbn' => '',
-            ])
-        );
-
-        $this->assertTrue($validator->fails());
-        $this->assertSame(
-            '13桁のISBNを入力してください。',
-            $validator->errors()->first('isbn')
-        );
-    }
-
     // 書籍更新時にisbnが13桁でない場合はバリデーションエラーになる
     public function test_update_book_rejects_invalid_isbn_length(): void
     {
@@ -223,24 +205,6 @@ class UpdateBookRequestTest extends TestCase
         );
 
         $this->assertFalse($validator->fails());
-    }
-
-    // 書籍更新時にpublished_dateが未入力の場合はバリデーションエラーになる
-    public function test_update_book_requires_published_date(): void
-    {
-        $genre = Genre::factory()->create();
-
-        $validator = $this->validator(
-            $this->basePayload($genre, [
-                'published_date' => '',
-            ])
-        );
-
-        $this->assertTrue($validator->fails());
-        $this->assertSame(
-            '出版日を入力してください。',
-            $validator->errors()->first('published_date')
-        );
     }
 
     // 書籍更新時にpublished_dateが日付でない場合はバリデーションエラーになる
