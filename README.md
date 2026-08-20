@@ -7,17 +7,16 @@
 ## ER図
 
 erDiagram
-
-    users {
-        bigint_unsigned id PK
-        varchar_255 name
-        varchar_255 email UK
-        timestamp email_verified_at
-        varchar_255 password
-        varchar_100 remember_token
-        timestamp created_at
-        timestamp updated_at
-    }
+users {
+bigint_unsigned id PK
+varchar_255 name
+varchar_255 email UK
+timestamp email_verified_at
+varchar_255 password
+varchar_100 remember_token
+timestamp created_at
+timestamp updated_at
+}
 
     books {
         bigint_unsigned id PK
@@ -73,6 +72,28 @@ erDiagram
         timestamp updated_at
     }
 
+    reading_plans {
+        bigint_unsigned id PK
+        bigint_unsigned book_id FK "UNIQUE(book_id, user_id)"
+        bigint_unsigned user_id FK
+        date target_date
+        string status
+        timestamp completed_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    notifications {
+        uuid id PK
+        string type
+        string notifiable_type
+        bigint_unsigned notifiable_id
+        text data
+        timestamp read_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
     users ||--o{ books : "has many"
     users ||--o{ reviews : "has many"
     books ||--o{ reviews : "has many"
@@ -85,6 +106,11 @@ erDiagram
 
     books ||--o{ book_genre : "has many"
     genres ||--o{ book_genre : "has many"
+
+    users ||--o{ reading_plans : "has many"
+    books ||--o{ reading_plans : "has many"
+
+    users ||--o{ notifications : "has many"
 
 ## 環境構築手順
 
