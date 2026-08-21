@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreReadingPlanRequest;
+use App\Http\Requests\UpdateReadingPlanRequest;
+use App\Models\Book;
 use App\Models\ReadingPlan;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ReadingPlanController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * ログインユーザーの読書計画一覧を表示する。
+     *
+     * statusが指定されている場合は、ステータスで絞り込む。
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $query = ReadingPlan::with('book')
             ->where('user_id', auth()->id());
@@ -21,54 +28,90 @@ class ReadingPlanController extends Controller
 
         $readingPlans = $query->latest()->get();
 
-        return view('reading_plans.index', compact('readingPlans'));
+        return view('reading-plans.index', compact('readingPlans'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 読書計画を読了状態に更新する。
      */
-    public function create()
+    public function complete(ReadingPlan $plan): RedirectResponse
     {
-        //
+        $this->authorize('update', $plan);
+
+        $plan->update([
+            'status' => 'completed',
+            'completed_at' => now(),
+        ]);
+
+        return redirect()
+            ->route('reading-plans.index')
+            ->with('success', '読書計画を読了にしました。');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 読書計画の作成画面を表示する。
      */
-    public function store(Request $request)
+    public function create(): View
     {
-        //
+        $books = Book::all();
+
+        return view('reading-plans.create', compact('books'));
     }
 
     /**
-     * Display the specified resource.
+     * 新しい読書計画を作成する。
      */
-    public function show(string $id)
+    public function store(StoreReadingPlanRequest $request): RedirectResponse
     {
-        //
+        $validated = $request->validated();
+
+        $validated['user_id'] = auth()->id();
+        $validated['status'] = 'in_progress';
+
+        ReadingPlan::create($validated);
+
+        return redirect()
+            ->route('reading-plans.index')
+            ->with('success', '読書計画を作成しました。');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 読書計画の編集画面を表示する。
      */
-    public function edit(string $id)
+    public function edit(ReadingPlan $plan): View
     {
-        //
+        $this->authorize('update', $plan);
+
+        return view('reading-plans.edit', compact('plan'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * 読書計画を更新する。
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(
+        UpdateReadingPlanRequest $request,
+        ReadingPlan $plan
+    ): RedirectResponse {
+        $this->authorize('update', $plan);
+
+        $plan->update($request->validated());
+
+        return redirect()
+            ->route('reading-plans.index')
+            ->with('success', '読書計画を更新しました。');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 読書計画を削除する。
      */
-    public function destroy(string $id)
+    public function destroy(ReadingPlan $plan): RedirectResponse
     {
-        //
+        $this->authorize('delete', $plan);
+
+        $plan->delete();
+
+        return redirect()
+            ->route('reading-plans.index')
+            ->with('success', '読書計画を削除しました。');
     }
 }

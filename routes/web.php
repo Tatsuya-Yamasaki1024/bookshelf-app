@@ -55,7 +55,8 @@ Route::middleware('auth')->group(function () {
 
     // 読書計画
     Route::resource('reading-plans', ReadingPlanController::class)
-        ->parameters(['reading-plans' => 'plan']);
+        ->parameters(['reading-plans' => 'plan'])
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
     Route::post('/reading-plans/{plan}/complete', [ReadingPlanController::class, 'complete'])
         ->name('reading-plans.complete');
