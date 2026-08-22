@@ -19,6 +19,10 @@ class Book extends Model
         'published_date',
     ];
 
+    protected $casts = [
+        'published_date' => 'date',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
