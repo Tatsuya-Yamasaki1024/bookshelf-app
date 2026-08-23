@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Illuminate\View\View;
 
 class RankingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 評価の高い書籍ランキングを表示する。
      */
-    public function index()
+    public function index(): View
     {
         $rankedBooks = Book::whereHas('reviews')
             ->withAvg('reviews', 'rating')

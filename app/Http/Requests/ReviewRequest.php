@@ -15,6 +15,20 @@ class ReviewRequest extends FormRequest
         return true;
     }
 
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            $book = $this->route('book');
+
+            if ($book->reviews()->where('user_id', auth()->id())->exists()) {
+                $validator->errors()->add(
+                    'review',
+                    'この書籍にはすでにレビューを投稿しています。'
+                );
+            }
+        });
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

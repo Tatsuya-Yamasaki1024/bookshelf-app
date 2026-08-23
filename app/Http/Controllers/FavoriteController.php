@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Favorite;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class FavoriteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * ログインユーザーのお気に入り書籍一覧を表示する。
      */
-    public function index()
+    public function index(): View
     {
         $books = auth()->user()
             ->favoriteBooks()
@@ -20,9 +22,9 @@ class FavoriteController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 書籍のお気に入り登録・解除を切り替える。
      */
-    public function toggle(Book $book)
+    public function toggle(Book $book): RedirectResponse
     {
         $favorite = Favorite::where('user_id', auth()->id())
             ->where('book_id', $book->id)

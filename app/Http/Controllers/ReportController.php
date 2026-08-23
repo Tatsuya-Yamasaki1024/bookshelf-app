@@ -10,14 +10,12 @@ class ReportController extends Controller
 {
     /**
      * マイ読書レポートを表示する。
-     *
-     * @return View
      */
     public function index(): View
     {
         $userId = auth()->id();
 
-        // 1.基本サマリー
+        // 1. 基本サマリー
 
         // 総レビュー数
         $total_reviews = Review::where('user_id', $userId)->count();
@@ -32,7 +30,6 @@ class ReportController extends Controller
         $average_rating = Review::where('user_id', $userId)
             ->avg('rating') ?? 0;
 
-
         // 2. 評価分布: 1〜5星ごとの件数を横バーで表示
         $ratingCounts = Review::where('user_id', $userId)
             ->selectRaw('rating, COUNT(*) as count')
@@ -40,26 +37,25 @@ class ReportController extends Controller
             ->pluck('count', 'rating');
 
         $rating_distribution = collect(range(1, 5))
-            ->mapWithKeys(fn($rating) => [
+            ->mapWithKeys(fn ($rating) => [
                 $rating - 1 => $ratingCounts->get($rating, 0),
             ]);
 
-
-        //3. 高評価書籍TOP5: 4星以上の書籍を評価の高い順に最大5件表示（書籍詳細リンク付き）
+        // 3. 高評価書籍TOP5: 4星以上の書籍を評価の高い順に最大5件表示
         $top_rated_books = Review::with('book')
             ->where('user_id', $userId)
             ->where('rating', '>=', 4)
             ->orderByDesc('rating')
             ->take(5)
             ->get()
-            ->map(fn($review) => [
+            ->map(fn ($review) => [
                 'id' => $review->book->id,
                 'title' => $review->book->title,
                 'author' => $review->book->author,
                 'rating' => $review->rating,
             ]);
 
-        //4. ジャンル別評価傾向TOP5: ジャンルごとの平均評価と件数を高い順に最大5件表示（ジャンル詳細リンク付き）
+        // 4. ジャンル別評価傾向TOP5
         $genre_ratings = Review::with('book.genres')
             ->where('user_id', $userId)
             ->get()
@@ -84,7 +80,6 @@ class ReportController extends Controller
             ->sortByDesc('average_rating')
             ->take(5)
             ->values();
-
 
         // レポートデータをまとめる
         $stats = [

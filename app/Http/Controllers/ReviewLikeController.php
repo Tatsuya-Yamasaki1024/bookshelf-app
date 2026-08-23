@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Models\ReviewLike;
+use Illuminate\Http\RedirectResponse;
 
 class ReviewLikeController extends Controller
 {
-    public function toggle(Review $review)
+    /**
+     * レビューへのいいね登録・解除を切り替える。
+     */
+    public function toggle(Review $review): RedirectResponse
     {
         $like = ReviewLike::where('user_id', auth()->id())
             ->where('review_id', $review->id)

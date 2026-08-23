@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGenreRequest;
 use App\Http\Requests\UpdateGenreRequest;
 use App\Models\Genre;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class GenreController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * ジャンル一覧を表示する。
      */
-    public function index()
+    public function index(): View
     {
         $genres = Genre::withCount('books')->get();
 
@@ -19,17 +21,17 @@ class GenreController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * ジャンル登録画面を表示する。
      */
-    public function create()
+    public function create(): View
     {
         return view('genres.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しいジャンルを登録する。
      */
-    public function store(StoreGenreRequest $request)
+    public function store(StoreGenreRequest $request): RedirectResponse
     {
         Genre::create($request->validated());
 
@@ -38,9 +40,9 @@ class GenreController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * ジャンル詳細を表示する。
      */
-    public function show(Genre $genre)
+    public function show(Genre $genre): View
     {
         $books = $genre->books()
             ->paginate(10);
@@ -49,18 +51,20 @@ class GenreController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * ジャンル編集画面を表示する。
      */
-    public function edit(Genre $genre)
+    public function edit(Genre $genre): View
     {
         return view('genres.edit', compact('genre'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * ジャンルを更新する。
      */
-    public function update(UpdateGenreRequest $request, Genre $genre)
-    {
+    public function update(
+        UpdateGenreRequest $request,
+        Genre $genre
+    ): RedirectResponse {
         $genre->update($request->validated());
 
         return redirect()->route('genres.index')
@@ -68,9 +72,9 @@ class GenreController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * ジャンルを削除する。
      */
-    public function destroy(Genre $genre)
+    public function destroy(Genre $genre): RedirectResponse
     {
         if ($genre->books()->exists()) {
             return redirect()->route('genres.index')
