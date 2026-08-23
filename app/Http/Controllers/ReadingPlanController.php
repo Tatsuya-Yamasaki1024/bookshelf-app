@@ -29,7 +29,21 @@ class ReadingPlanController extends Controller
             $query->where('status', $request->status);
         }
 
-        $readingPlans = $query->latest()->get();
+        $readingPlans = $query
+            ->orderByRaw('
+            CASE status
+                WHEN ? THEN 1
+                WHEN ? THEN 2
+                WHEN ? THEN 3
+                ELSE 4
+            END
+        ', [
+                ReadingPlanStatus::Expired->value,
+                ReadingPlanStatus::InProgress->value,
+                ReadingPlanStatus::Completed->value,
+            ])
+            ->orderBy('target_date')
+            ->get();
 
         return view('reading-plans.index', compact(
             'readingPlans',
