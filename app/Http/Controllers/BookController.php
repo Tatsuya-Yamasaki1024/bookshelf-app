@@ -6,13 +6,15 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Genre;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class BookController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 書籍一覧を表示する。
      */
-    public function index()
+    public function index(): View
     {
         $books = Book::with('genres')
             ->paginate(10);
@@ -21,9 +23,9 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 書籍登録画面を表示する。
      */
-    public function create()
+    public function create(): View
     {
         $genres = Genre::all();
 
@@ -31,9 +33,9 @@ class BookController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しい書籍を登録する。
      */
-    public function store(StoreBookRequest $request)
+    public function store(StoreBookRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $genreIds = $validated['genres'];
@@ -49,20 +51,19 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 書籍詳細を表示する。
      */
-    public function show(Book $book)
+    public function show(Book $book): View
     {
         $book->load(['genres', 'reviews.user']);
 
         return view('books.show', compact('book'));
-
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 書籍編集画面を表示する。
      */
-    public function edit(Book $book)
+    public function edit(Book $book): View
     {
         $this->authorize('update', $book);
         $book->load('genres');
@@ -72,10 +73,12 @@ class BookController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 書籍を更新する。
      */
-    public function update(UpdateBookRequest $request, Book $book)
-    {
+    public function update(
+        UpdateBookRequest $request,
+        Book $book
+    ): RedirectResponse {
         $this->authorize('update', $book);
 
         $validated = $request->validated();
@@ -91,9 +94,9 @@ class BookController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 書籍を削除する。
      */
-    public function destroy(Book $book)
+    public function destroy(Book $book): RedirectResponse
     {
         $this->authorize('delete', $book);
 

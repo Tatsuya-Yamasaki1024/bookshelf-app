@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReadingPlanStatus;
 use App\Http\Requests\StoreReadingPlanRequest;
 use App\Http\Requests\UpdateReadingPlanRequest;
 use App\Models\Book;
@@ -22,13 +23,18 @@ class ReadingPlanController extends Controller
         $query = ReadingPlan::with('book')
             ->where('user_id', auth()->id());
 
+        $currentStatus = $request->status;
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
         $readingPlans = $query->latest()->get();
 
-        return view('reading-plans.index', compact('readingPlans'));
+        return view('reading-plans.index', compact(
+            'readingPlans',
+            'currentStatus'
+        ));
     }
 
     /**
@@ -39,7 +45,7 @@ class ReadingPlanController extends Controller
         $this->authorize('update', $plan);
 
         $plan->update([
-            'status' => 'completed',
+            'status' => ReadingPlanStatus::Completed,
             'completed_at' => now(),
         ]);
 
@@ -66,7 +72,7 @@ class ReadingPlanController extends Controller
         $validated = $request->validated();
 
         $validated['user_id'] = auth()->id();
-        $validated['status'] = 'in_progress';
+        $validated['status'] = ReadingPlanStatus::InProgress;
 
         ReadingPlan::create($validated);
 
@@ -82,7 +88,9 @@ class ReadingPlanController extends Controller
     {
         $this->authorize('update', $plan);
 
-        return view('reading-plans.edit', compact('plan'));
+        return view('reading-plans.edit', [
+            'readingPlan' => $plan,
+        ]);
     }
 
     /**
@@ -94,7 +102,11 @@ class ReadingPlanController extends Controller
     ): RedirectResponse {
         $this->authorize('update', $plan);
 
-        $plan->update($request->validated());
+        $plan->update([
+            'target_date' => $request->validated('target_date'),
+            'status' => ReadingPlanStatus::InProgress,
+            'completed_at' => null,
+        ]);
 
         return redirect()
             ->route('reading-plans.index')
