@@ -37,9 +37,6 @@ class StoreBookRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required' => '登録者のユーザーIDを入力してください。',
-            'user_id.exists' => '指定されたユーザーは存在しません。',
-
             'title.required' => 'タイトルを入力してください。',
             'title.max' => 'タイトルは255文字以内で入力してください。',
 

@@ -35,7 +35,6 @@ class BookController extends Controller
             $query->whereHas('genres', function ($q) use ($request) {
                 $q->where('genres.id', $request->genre_id);
             });
-
         }
         $perPage = $request->input('per_page', 20);
         $books = $query->paginate($perPage);
@@ -52,6 +51,8 @@ class BookController extends Controller
 
         $data = $validated;
         unset($data['genres']);
+
+        $data['user_id'] = auth()->id();
 
         $book = Book::create($data);
         $book->genres()->attach($validated['genres']);
@@ -79,6 +80,8 @@ class BookController extends Controller
      */
     public function update(UpdateBookRequest $request, Book $book)
     {
+        $this->authorize('update', $book);
+
         $validated = $request->validated();
 
         $data = $validated;
@@ -96,6 +99,8 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
+        $this->authorize('delete', $book);
+
         $book->delete();
 
         return response()->json(null, 204);
