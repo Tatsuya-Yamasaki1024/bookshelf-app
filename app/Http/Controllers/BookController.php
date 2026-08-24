@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Genre;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class BookController extends Controller
@@ -14,12 +15,50 @@ class BookController extends Controller
     /**
      * 書籍一覧を表示する。
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $books = Book::with('genres')
-            ->paginate(10);
+        $genres = Genre::all();
 
-        return view('books.index', compact('books'));
+        $keyword = $request->input('keyword');
+        $genre = $request->input('genre');
+        $sort = $request->input('sort', 'newest');
+
+        $books = Book::with('genres')
+            ->when($keyword, function ($query, $keyword) {
+                $query->where(function ($query) use ($keyword) {
+                    $query->where('title', 'like', "%{$keyword}%")
+                        ->orWhere('author', 'like', "%{$keyword}%");
+                });
+            })
+            ->when($genre, function ($query, $genre) {
+                $query->whereHas('genres', function ($query) use ($genre) {
+                    $query->where('genres.id', $genre);
+                });
+            })
+            ->when($sort === 'newest', function ($query) {
+                $query->orderByDesc('created_at');
+            })
+            ->when($sort === 'oldest', function ($query) {
+                $query->orderBy('created_at');
+            })
+            ->when($sort === 'title', function ($query) {
+                $query->orderBy('title');
+            })
+            ->when($sort === 'rating', function ($query) {
+                $query->withAvg('reviews', 'rating')
+                    ->orderByRaw('reviews_avg_rating IS NULL')
+                    ->orderByDesc('reviews_avg_rating');
+            })
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('books.index', compact(
+            'books',
+            'genres',
+            'keyword',
+            'genre',
+            'sort'
+        ));
     }
 
     /**

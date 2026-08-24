@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookIsbnController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\NotificationController;
@@ -23,6 +24,10 @@ use Illuminate\Support\Facades\Route;
 */
 // 認証必須
 Route::middleware('auth')->group(function () {
+
+    // ISBN検索
+    Route::get('/books/isbn/{isbn}', [BookIsbnController::class, 'searchByIsbn'])
+        ->name('books.isbn');
 
     // 書籍登録・編集・削除
     Route::resource('books', BookController::class)
