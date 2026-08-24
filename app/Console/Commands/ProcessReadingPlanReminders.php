@@ -82,14 +82,8 @@ class ProcessReadingPlanReminders extends Command
                     ->notifications()
                     ->where('type', ReadingPlanReminder::class)
                     ->whereDate('created_at', today())
-                    ->where(
-                        'data->reminder_type',
-                        $reminderType->value
-                    )
-                    ->where(
-                        'data->reading_plan_id',
-                        $readingPlan->id
-                    )
+                    ->where('data->timing', $reminderType->value)
+                    ->where('data->reading_plan_id', $readingPlan->id)
                     ->exists();
 
                 if ($alreadySent) {
