@@ -15,7 +15,7 @@ class GoogleBooksService
         $response = Http::get(
             'https://www.googleapis.com/books/v1/volumes',
             [
-                'q' => 'isbn:' . $isbn,
+                'q' => 'isbn:'.$isbn,
             ]
         );
 
