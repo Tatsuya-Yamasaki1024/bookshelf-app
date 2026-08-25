@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\IsbnSearchRequest;
 use App\Services\GoogleBooksService;
+use Illuminate\Http\JsonResponse;
 
 class BookIsbnController extends Controller
 {
@@ -13,8 +14,11 @@ class BookIsbnController extends Controller
 
     /**
      * ISBNで書籍情報を検索する。
+     *
+     * @param  IsbnSearchRequest  $request  ISBN検索リクエスト
+     * @return JsonResponse Google Books APIから取得した書籍情報のJSONレスポンス
      */
-    public function searchByIsbn(IsbnSearchRequest $request)
+    public function searchByIsbn(IsbnSearchRequest $request): JsonResponse
     {
         $isbn = $request->validated('isbn');
 

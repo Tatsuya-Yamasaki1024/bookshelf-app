@@ -8,7 +8,11 @@ use App\Models\User;
 class BookPolicy
 {
     /**
-     * 書籍の更新権限を判定する。
+     * ユーザーが書籍を更新できるか判定する。
+     *
+     * @param  User  $user  認証ユーザー
+     * @param  Book  $book  更新対象の書籍
+     * @return bool 更新権限がある場合はtrue、ない場合はfalse
      */
     public function update(User $user, Book $book): bool
     {
@@ -16,7 +20,11 @@ class BookPolicy
     }
 
     /**
-     * 書籍の削除権限を判定する。
+     * ユーザーが書籍を削除できるか判定する。
+     *
+     * @param  User  $user  認証ユーザー
+     * @param  Book  $book  削除対象の書籍
+     * @return bool 削除権限がある場合はtrue、ない場合はfalse
      */
     public function delete(User $user, Book $book): bool
     {

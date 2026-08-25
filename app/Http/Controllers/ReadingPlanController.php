@@ -17,6 +17,9 @@ class ReadingPlanController extends Controller
      * ログインユーザーの読書計画一覧を表示する。
      *
      * statusが指定されている場合は、ステータスで絞り込む。
+     *
+     * @param  Request  $request  読書計画一覧のリクエスト
+     * @return View 読書計画一覧画面
      */
     public function index(Request $request): View
     {
@@ -53,6 +56,9 @@ class ReadingPlanController extends Controller
 
     /**
      * 読書計画を読了状態に更新する。
+     *
+     * @param  ReadingPlan  $plan  読了状態にする読書計画
+     * @return RedirectResponse 読書計画一覧画面へのリダイレクト
      */
     public function complete(ReadingPlan $plan): RedirectResponse
     {
@@ -70,6 +76,8 @@ class ReadingPlanController extends Controller
 
     /**
      * 読書計画の作成画面を表示する。
+     *
+     * @return View 読書計画作成画面
      */
     public function create(): View
     {
@@ -80,6 +88,9 @@ class ReadingPlanController extends Controller
 
     /**
      * 新しい読書計画を作成する。
+     *
+     * @param  StoreReadingPlanRequest  $request  読書計画作成リクエスト
+     * @return RedirectResponse 読書計画一覧画面へのリダイレクト
      */
     public function store(StoreReadingPlanRequest $request): RedirectResponse
     {
@@ -97,6 +108,9 @@ class ReadingPlanController extends Controller
 
     /**
      * 読書計画の編集画面を表示する。
+     *
+     * @param  ReadingPlan  $plan  編集対象の読書計画
+     * @return View 読書計画編集画面
      */
     public function edit(ReadingPlan $plan): View
     {
@@ -109,6 +123,10 @@ class ReadingPlanController extends Controller
 
     /**
      * 読書計画を更新する。
+     *
+     * @param  UpdateReadingPlanRequest  $request  読書計画更新リクエスト
+     * @param  ReadingPlan  $plan  更新対象の読書計画
+     * @return RedirectResponse 読書計画一覧画面へのリダイレクト
      */
     public function update(
         UpdateReadingPlanRequest $request,
@@ -129,6 +147,9 @@ class ReadingPlanController extends Controller
 
     /**
      * 読書計画を削除する。
+     *
+     * @param  ReadingPlan  $plan  削除対象の読書計画
+     * @return RedirectResponse 読書計画一覧画面へのリダイレクト
      */
     public function destroy(ReadingPlan $plan): RedirectResponse
     {

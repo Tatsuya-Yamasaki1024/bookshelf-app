@@ -13,22 +13,30 @@ class ReviewController extends Controller
     /**
      * 書籍にレビューを投稿する。
      *
-     * @return RedirectResponse
+     * @param  ReviewRequest  $request  レビュー投稿リクエスト
+     * @param  Book  $book  レビュー対象の書籍
+     * @return RedirectResponse 書籍詳細画面へのリダイレクト
      */
-    public function store(ReviewRequest $request, Book $book)
-    {
+    public function store(
+        ReviewRequest $request,
+        Book $book
+    ): RedirectResponse {
         Review::create([
             'book_id' => $book->id,
             'user_id' => auth()->id(),
             ...$request->validated(),
         ]);
 
-        return redirect()->route('books.show', $book)
+        return redirect()
+            ->route('books.show', $book)
             ->with('success', 'レビューを投稿しました。');
     }
 
     /**
      * レビュー編集画面を表示する。
+     *
+     * @param  Review  $review  編集対象のレビュー
+     * @return View レビュー編集画面
      */
     public function edit(Review $review): View
     {
@@ -39,6 +47,10 @@ class ReviewController extends Controller
 
     /**
      * レビューを更新する。
+     *
+     * @param  ReviewRequest  $request  レビュー更新リクエスト
+     * @param  Review  $review  更新対象のレビュー
+     * @return RedirectResponse 書籍詳細画面へのリダイレクト
      */
     public function update(
         ReviewRequest $request,
@@ -48,12 +60,16 @@ class ReviewController extends Controller
 
         $review->update($request->validated());
 
-        return redirect()->route('books.show', $review->book)
+        return redirect()
+            ->route('books.show', $review->book)
             ->with('success', 'レビューを更新しました。');
     }
 
     /**
      * レビューを削除する。
+     *
+     * @param  Review  $review  削除対象のレビュー
+     * @return RedirectResponse 書籍詳細画面へのリダイレクト
      */
     public function destroy(Review $review): RedirectResponse
     {
@@ -63,7 +79,8 @@ class ReviewController extends Controller
 
         $review->delete();
 
-        return redirect()->route('books.show', $book)
+        return redirect()
+            ->route('books.show', $book)
             ->with('success', 'レビューを削除しました。');
     }
 }

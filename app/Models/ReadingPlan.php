@@ -22,11 +22,21 @@ class ReadingPlan extends Model
         'status' => ReadingPlanStatus::class,
     ];
 
+    /**
+     * 読書計画に紐付く書籍を取得する。
+     *
+     * @return BelongsTo 書籍との多対一リレーション
+     */
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
     }
 
+    /**
+     * 読書計画を作成したユーザーを取得する。
+     *
+     * @return BelongsTo ユーザーとの多対一リレーション
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

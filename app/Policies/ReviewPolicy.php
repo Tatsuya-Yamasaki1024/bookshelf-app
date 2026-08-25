@@ -8,7 +8,11 @@ use App\Models\User;
 class ReviewPolicy
 {
     /**
-     * レビューを更新できるか判定する。
+     * ユーザーがレビューを更新できるか判定する。
+     *
+     * @param  User  $user  認証ユーザー
+     * @param  Review  $review  更新対象のレビュー
+     * @return bool 更新権限がある場合はtrue、ない場合はfalse
      */
     public function update(User $user, Review $review): bool
     {
@@ -16,7 +20,11 @@ class ReviewPolicy
     }
 
     /**
-     * レビューを削除できるか判定する。
+     * ユーザーがレビューを削除できるか判定する。
+     *
+     * @param  User  $user  認証ユーザー
+     * @param  Review  $review  削除対象のレビュー
+     * @return bool 削除権限がある場合はtrue、ない場合はfalse
      */
     public function delete(User $user, Review $review): bool
     {

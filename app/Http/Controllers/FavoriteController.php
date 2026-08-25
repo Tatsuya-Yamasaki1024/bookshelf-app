@@ -11,6 +11,8 @@ class FavoriteController extends Controller
 {
     /**
      * ログインユーザーのお気に入り書籍一覧を表示する。
+     *
+     * @return View お気に入り書籍一覧画面
      */
     public function index(): View
     {
@@ -23,6 +25,9 @@ class FavoriteController extends Controller
 
     /**
      * 書籍のお気に入り登録・解除を切り替える。
+     *
+     * @param  Book  $book  お気に入り登録・解除の対象となる書籍
+     * @return RedirectResponse 元のページへのリダイレクト
      */
     public function toggle(Book $book): RedirectResponse
     {

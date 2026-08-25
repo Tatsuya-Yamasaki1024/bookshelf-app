@@ -9,6 +9,11 @@ class GoogleBooksService
 {
     /**
      * ISBNでGoogle Books APIから書籍情報を取得する。
+     *
+     * @param  string  $isbn  ISBN-13
+     * @return array<string, mixed>|null 書籍情報。見つからない場合はnull
+     *
+     * @throws RuntimeException Google Books APIとの通信に失敗した場合
      */
     public function searchByIsbn(string $isbn): ?array
     {
