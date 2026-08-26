@@ -9,6 +9,8 @@ class RankingController extends Controller
 {
     /**
      * 評価の高い書籍ランキングを表示する。
+     *
+     * @return View 評価の高い書籍ランキング画面
      */
     public function index(): View
     {

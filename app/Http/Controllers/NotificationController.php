@@ -9,6 +9,8 @@ class NotificationController extends Controller
 {
     /**
      * ログインユーザーの通知一覧を表示する。
+     *
+     * @return View 通知一覧画面
      */
     public function index(): View
     {
@@ -22,6 +24,9 @@ class NotificationController extends Controller
 
     /**
      * 指定された通知を既読にする。
+     *
+     * @param  string  $id  既読にする通知のID
+     * @return RedirectResponse 通知一覧画面へのリダイレクト
      */
     public function markAsRead(string $id): RedirectResponse
     {

@@ -27,6 +27,8 @@ class ProcessReadingPlanReminders extends Command
 
     /**
      * 読書計画の期限状態を更新し、リマインダー通知を送信する。
+     *
+     * @return int コマンドの終了ステータス
      */
     public function handle(): int
     {
@@ -67,6 +69,10 @@ class ProcessReadingPlanReminders extends Command
 
     /**
      * 条件に一致する読書計画へリマインダー通知を送信する。
+     *
+     * @param  CarbonInterface  $targetDate  通知対象となる基準日
+     * @param  ReadingPlanStatus  $status  通知対象の読書計画ステータス
+     * @param  ReadingPlanReminderType  $reminderType  リマインダーの種類
      */
     private function sendReminders(
         CarbonInterface $targetDate,

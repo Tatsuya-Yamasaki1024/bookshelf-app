@@ -10,6 +10,9 @@ class ReviewLikeController extends Controller
 {
     /**
      * レビューへのいいね登録・解除を切り替える。
+     *
+     * @param  Review  $review  いいね対象のレビュー
+     * @return RedirectResponse 元のページへのリダイレクト
      */
     public function toggle(Review $review): RedirectResponse
     {

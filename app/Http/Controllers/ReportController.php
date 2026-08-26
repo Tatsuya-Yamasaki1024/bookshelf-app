@@ -10,6 +10,8 @@ class ReportController extends Controller
 {
     /**
      * マイ読書レポートを表示する。
+     *
+     * @return View マイ読書レポート画面
      */
     public function index(): View
     {
