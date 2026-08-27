@@ -6,21 +6,24 @@ use App\Models\Book;
 use App\Models\Genre;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class StoreBookTest extends TestCase
 {
     use RefreshDatabase;
 
-    // POST /api/v1/booksで書籍が作成され、ジャンルが紐付く
+    // POST /api/v1/booksで書籍が作成され、ジャンルが紐付く(ログインユーザー)
     public function test_book_is_created_and_genres_are_attached()
     {
         $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
         $genre1 = Genre::factory()->create();
         $genre2 = Genre::factory()->create();
 
         $data = [
-            'user_id' => $user->id,
             'title' => '吾輩は猫である',
             'author' => '夏目漱石',
             'isbn' => '9784101010014',
@@ -43,7 +46,7 @@ class StoreBookTest extends TestCase
             'title' => '吾輩は猫である',
             'author' => '夏目漱石',
             'isbn' => '9784101010014',
-            'published_date' => '1905-01-01',
+            'published_date' => '1905-01-01 00:00:00',
         ]);
 
         $book = Book::where('isbn', '9784101010014')->first();
@@ -65,8 +68,9 @@ class StoreBookTest extends TestCase
         $user = User::factory()->create();
         $genre = Genre::factory()->create();
 
+        Sanctum::actingAs($user);
+
         $data = [
-            'user_id' => $user->id,
             'title' => '吾輩は猫である',
             'author' => '夏目漱石',
             'isbn' => '9784101010014',
@@ -87,6 +91,8 @@ class StoreBookTest extends TestCase
         $user = User::factory()->create();
         $genre = Genre::factory()->create();
 
+        Sanctum::actingAs($user);
+
         $data = [
             'user_id' => $user->id,
             'title' => '',
@@ -102,5 +108,23 @@ class StoreBookTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['title']);
+    }
+
+    // ゲストは書籍を登録できず、401が返る
+    public function test_guest_cannot_create_book()
+    {
+        $genre = Genre::factory()->create();
+
+        $response = $this->postJson('/api/v1/books', [
+            'title' => '吾輩は猫である',
+            'author' => '夏目漱石',
+            'isbn' => '9784101010014',
+            'published_date' => '1905-01-01',
+            'description' => '猫を主人公とした小説。',
+            'image_url' => 'https://example.com/book.jpg',
+            'genres' => [$genre->id],
+        ]);
+
+        $response->assertStatus(401);
     }
 }

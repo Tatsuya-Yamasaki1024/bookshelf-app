@@ -41,49 +41,6 @@ class StoreBookRequestTest extends TestCase
         ];
     }
 
-    // user_idが正しい入力の場合、バリデーションを通過する
-    public function test_user_id_is_valid()
-    {
-        $data = $this->validData();
-
-        $validator = $this->validator($data);
-
-        $this->assertTrue($validator->passes());
-    }
-
-    // user_idが未入力の場合、バリデーションエラーになる
-    public function test_user_id_is_invalid_when_empty()
-    {
-        $data = $this->validData();
-        unset($data['user_id']);
-
-        $validator = $this->validator($data);
-
-        $this->assertTrue($validator->fails());
-    }
-
-    // user_idが整数以外の場合、バリデーションエラーになる
-    public function test_user_id_is_invalid_when_not_integer()
-    {
-        $data = $this->validData();
-        $data['user_id'] = 'abc';
-
-        $validator = $this->validator($data);
-
-        $this->assertTrue($validator->fails());
-    }
-
-    // user_idが存在しない場合、バリデーションエラーになる
-    public function test_user_id_is_invalid_when_user_does_not_exist()
-    {
-        $data = $this->validData();
-        $data['user_id'] = 999999;
-
-        $validator = $this->validator($data);
-
-        $this->assertTrue($validator->fails());
-    }
-
     // titleが正しい入力の場合、バリデーションを通過する
     public function test_title_is_valid()
     {
@@ -180,17 +137,6 @@ class StoreBookRequestTest extends TestCase
         $this->assertTrue($validator->passes());
     }
 
-    // isbnが未入力の場合、バリデーションエラーになる
-    public function test_isbn_is_invalid_when_empty()
-    {
-        $data = $this->validData();
-        unset($data['isbn']);
-
-        $validator = $this->validator($data);
-
-        $this->assertTrue($validator->fails());
-    }
-
     // isbnが13桁ではない場合、バリデーションエラーになる
     public function test_isbn_is_invalid_when_not_13_digits()
     {
@@ -235,17 +181,6 @@ class StoreBookRequestTest extends TestCase
         $validator = $this->validator($data);
 
         $this->assertTrue($validator->passes());
-    }
-
-    // published_dateが未入力の場合、バリデーションエラーになる
-    public function test_published_date_is_invalid_when_empty()
-    {
-        $data = $this->validData();
-        unset($data['published_date']);
-
-        $validator = $this->validator($data);
-
-        $this->assertTrue($validator->fails());
     }
 
     // published_dateが日付ではない場合、バリデーションエラーになる

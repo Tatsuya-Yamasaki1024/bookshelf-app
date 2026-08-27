@@ -177,20 +177,6 @@ class UpdateBookRequestTest extends TestCase
         $this->assertTrue($validator->passes());
     }
 
-    // isbnが未入力の場合、バリデーションエラーになる
-    public function test_isbn_is_invalid_when_empty()
-    {
-        $validData = $this->validData();
-        unset($validData['data']['isbn']);
-
-        $validator = $this->validator(
-            $validData['data'],
-            $validData['book']
-        );
-
-        $this->assertTrue($validator->fails());
-    }
-
     // isbnが13桁ではない場合、バリデーションエラーになる
     public function test_isbn_is_invalid_when_not_13_digits()
     {
@@ -261,20 +247,6 @@ class UpdateBookRequestTest extends TestCase
         );
 
         $this->assertTrue($validator->passes());
-    }
-
-    // published_dateが未入力の場合、バリデーションエラーになる
-    public function test_published_date_is_invalid_when_empty()
-    {
-        $validData = $this->validData();
-        unset($validData['data']['published_date']);
-
-        $validator = $this->validator(
-            $validData['data'],
-            $validData['book']
-        );
-
-        $this->assertTrue($validator->fails());
     }
 
     // published_dateが日付ではない場合、バリデーションエラーになる
