@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ReviewRequest;
+use App\Http\Requests\StoreReviewRequest;
+use App\Http\Requests\UpdateReviewRequest;
 use App\Models\Book;
 use App\Models\Review;
 use Illuminate\Http\RedirectResponse;
@@ -13,12 +14,12 @@ class ReviewController extends Controller
     /**
      * 書籍にレビューを投稿する。
      *
-     * @param  ReviewRequest  $request  レビュー投稿リクエスト
+     * @param  StoreReviewRequest  $request  レビュー投稿リクエスト
      * @param  Book  $book  レビュー対象の書籍
      * @return RedirectResponse 書籍詳細画面へのリダイレクト
      */
     public function store(
-        ReviewRequest $request,
+        StoreReviewRequest $request,
         Book $book
     ): RedirectResponse {
         Review::create([
@@ -48,12 +49,12 @@ class ReviewController extends Controller
     /**
      * レビューを更新する。
      *
-     * @param  ReviewRequest  $request  レビュー更新リクエスト
+     * @param  UpdateReviewRequest  $request  レビュー更新リクエスト
      * @param  Review  $review  更新対象のレビュー
      * @return RedirectResponse 書籍詳細画面へのリダイレクト
      */
     public function update(
-        ReviewRequest $request,
+        UpdateReviewRequest $request,
         Review $review
     ): RedirectResponse {
         $this->authorize('update', $review);

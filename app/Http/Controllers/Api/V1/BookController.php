@@ -11,6 +11,7 @@ use App\Http\Resources\IndexBookResource;
 use App\Http\Resources\StoreBookResource;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
@@ -19,10 +20,11 @@ class BookController extends Controller
      * 書籍一覧を取得する。
      *
      * @param  IndexBookRequest  $request  書籍一覧取得リクエスト
-     * @return IndexBookResource 書籍一覧のJSONリソース
+     * @return AnonymousResourceCollection 書籍一覧のJSONリソース
      */
-    public function index(IndexBookRequest $request): IndexBookResource
-    {
+    public function index(
+        IndexBookRequest $request
+    ): AnonymousResourceCollection {
         $query = Book::with('genres')
             ->withAvg('reviews', 'rating')
             ->withCount('reviews');
