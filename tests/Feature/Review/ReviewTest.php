@@ -28,7 +28,7 @@ class ReviewTest extends TestCase
         $response = $this->actingAs($user)->post(
             route('reviews.store', $book),
             [
-                'rating' => '3',
+                'rating' => 3,
                 'comment' => 'テスト投稿',
             ]
         );
@@ -45,7 +45,7 @@ class ReviewTest extends TestCase
             route('books.show', $book)
         );
         $response->assertSee('テスト投稿');
-        $response->assertSee('3');
+        $response->assertSee(3);
     }
 
     // ログインユーザーが自身のレビューを編集できることを確認する。
@@ -68,7 +68,7 @@ class ReviewTest extends TestCase
         $response = $this->actingAs($user)->put(
             route('reviews.update', $review),
             [
-                'rating' => '3',
+                'rating' => 3,
                 'comment' => 'テスト投稿更新',
             ]
         );
@@ -130,14 +130,14 @@ class ReviewTest extends TestCase
         Review::factory()->create([
             'book_id' => $book->id,
             'user_id' => $user->id,
-            'rating' => '3',
+            'rating' => 3,
             'comment' => 'テスト投稿',
         ]);
 
         $response = $this->actingAs($user)->post(
             route('reviews.store', $book),
             [
-                'rating' => '1',
+                'rating' => 1,
                 'comment' => 'テスト再投稿',
             ]
         );

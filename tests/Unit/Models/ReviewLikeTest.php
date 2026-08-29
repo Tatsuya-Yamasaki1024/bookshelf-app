@@ -3,7 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Review;
-use App\Models\Reviewlike;
+use App\Models\ReviewLike;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,7 +16,7 @@ class ReviewLikeTest extends TestCase
     {
         $review = Review::factory()->create();
 
-        $reviewLike = Reviewlike::factory()->create([
+        $reviewLike = ReviewLike::factory()->create([
             'review_id' => $review->id,
         ]);
 
@@ -27,7 +27,7 @@ class ReviewLikeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $reviewLike = Reviewlike::factory()->create([
+        $reviewLike = ReviewLike::factory()->create([
             'user_id' => $user->id,
         ]);
 
