@@ -200,14 +200,13 @@ class BookSearchTest extends TestCase
 
         Review::factory()->create([
             'book_id' => $book1->id,
-            'rating' => 3
+            'rating' => 3,
         ]);
 
         Review::factory()->create([
             'book_id' => $book2->id,
-            'rating' => 5
+            'rating' => 5,
         ]);
-
 
         $response = $this->get(route('books.index', [
             'sort' => 'rating',
@@ -238,7 +237,6 @@ class BookSearchTest extends TestCase
         $book3 = Book::factory()->create([
             'title' => '蝶のサナギ',
         ]);
-
 
         $response = $this->get(route('books.index', [
             'keyword' => 'サナギ',

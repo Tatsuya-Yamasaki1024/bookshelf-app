@@ -8,10 +8,9 @@ use App\Models\ReadingPlan;
 use App\Models\User;
 use App\Notifications\ReadingPlanReminder;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
-
 
 class ReadingPlanReminderTest extends TestCase
 {

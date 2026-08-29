@@ -4,10 +4,9 @@ namespace Tests\Feature\Apply\Notification;
 
 use App\Models\User;
 use App\Notifications\ReadingPlanReminder;
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
-
 
 class NotificationTest extends TestCase
 {

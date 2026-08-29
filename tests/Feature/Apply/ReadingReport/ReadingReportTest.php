@@ -33,7 +33,6 @@ class ReadingReportTest extends TestCase
         $user = User::factory()->create();
         $otherUser = User::factory()->create();
 
-
         Review::factory()->count(2)->create([
             'user_id' => $user->id,
             'rating' => 1,

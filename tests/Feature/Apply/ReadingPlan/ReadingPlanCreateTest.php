@@ -6,9 +6,9 @@ use App\Enums\ReadingPlanStatus;
 use App\Models\Book;
 use App\Models\ReadingPlan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Carbon\Carbon;
 
 class ReadingPlanCreateTest extends TestCase
 {
@@ -114,7 +114,6 @@ class ReadingPlanCreateTest extends TestCase
             'status' => ReadingPlanStatus::Expired,
         ]);
 
-
         $targetDate = Carbon::today()->addDays(7);
 
         $response = $this->actingAs($user)
@@ -131,7 +130,6 @@ class ReadingPlanCreateTest extends TestCase
             'status' => ReadingPlanStatus::InProgress->value,
         ]);
     }
-
 
     // 期日が未入力の場合、バリデーションエラーになる
     public function test_target_date_is_required(): void

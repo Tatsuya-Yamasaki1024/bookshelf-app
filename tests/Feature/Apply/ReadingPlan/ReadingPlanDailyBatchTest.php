@@ -2,14 +2,11 @@
 
 namespace Tests\Feature\Apply\ReadingPlan;
 
-use App\Enums\ReadingPlanReminderType;
 use App\Enums\ReadingPlanStatus;
 use App\Models\Book;
 use App\Models\ReadingPlan;
 use App\Models\User;
-use App\Notifications\ReadingPlanReminder;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
