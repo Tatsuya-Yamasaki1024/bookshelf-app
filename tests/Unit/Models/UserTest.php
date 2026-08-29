@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Book;
 use App\Models\Favorite;
+use App\Models\ReadingPlan;
 use App\Models\Review;
 use App\Models\Reviewlike;
 use App\Models\User;
@@ -25,7 +26,6 @@ class UserTest extends TestCase
 
         $this->assertCount(1, $user->fresh()->books);
         $this->assertTrue($user->books->first()->is($book1));
-
     }
 
     // User → Review
@@ -39,7 +39,6 @@ class UserTest extends TestCase
 
         $this->assertCount(1, $user->fresh()->reviews);
         $this->assertTrue($user->reviews->first()->is($review1));
-
     }
 
     // User → Favorite
@@ -78,5 +77,17 @@ class UserTest extends TestCase
         $user->favoriteBooks()->attach($book);
 
         $this->assertCount(1, $user->fresh()->favoriteBooks);
+    }
+
+    // User→ReadingPlan
+    public function test_user_has_many_reading_plans(): void
+    {
+        $user = User::factory()->create();
+
+        ReadingPlan::factory()->count(2)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertCount(2, $user->fresh()->readingPlans);
     }
 }
