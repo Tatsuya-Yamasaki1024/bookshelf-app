@@ -7,8 +7,11 @@ use App\Http\Requests\StoreReadingPlanRequest;
 use App\Http\Requests\UpdateReadingPlanRequest;
 use App\Models\Book;
 use App\Models\ReadingPlan;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ReadingPlanController extends Controller
@@ -64,10 +67,17 @@ class ReadingPlanController extends Controller
     {
         $this->authorize('update', $plan);
 
-        $plan->update([
-            'status' => ReadingPlanStatus::Completed,
-            'completed_at' => now(),
-        ]);
+        DB::transaction(function () use ($plan) {
+            $plan->update([
+                'status' => ReadingPlanStatus::Completed,
+                'completed_at' => now(),
+            ]);
+
+            DatabaseNotification::where('notifiable_type', User::class)
+                ->where('notifiable_id', $plan->user_id)
+                ->whereJsonContains('data->reading_plan_id', $plan->id)
+                ->delete();
+        });
 
         return redirect()
             ->route('reading-plans.index')
@@ -155,7 +165,14 @@ class ReadingPlanController extends Controller
     {
         $this->authorize('delete', $plan);
 
-        $plan->delete();
+        DB::transaction(function () use ($plan) {
+            DatabaseNotification::where('notifiable_type', 'App\Models\User')
+                ->where('notifiable_id', $plan->user_id)
+                ->whereJsonContains('data->reading_plan_id', $plan->id)
+                ->delete();
+
+            $plan->delete();
+        });
 
         return redirect()
             ->route('reading-plans.index')
