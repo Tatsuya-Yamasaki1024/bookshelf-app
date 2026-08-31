@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (AuthenticationException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => '認証が必要です。',
+                    'error' => '認証が必要です。',
                 ], 401);
             }
         });
@@ -45,7 +45,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'この書籍を操作する権限がありません。',
+                    'error' => 'この書籍を操作する権限がありません。',
                 ], 403);
             }
         });
@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => '書籍が見つかりません。',
+                    'error' => '書籍が見つかりませんでした。',
                 ], 404);
             }
         });

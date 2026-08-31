@@ -76,7 +76,7 @@ class DeleteBookTest extends TestCase
 
         $response->assertStatus(404)
             ->assertJsonStructure([
-                'message',
+                'error',
             ]);
     }
 
