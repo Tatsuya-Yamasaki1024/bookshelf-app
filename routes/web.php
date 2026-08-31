@@ -80,6 +80,11 @@ Route::middleware('auth')->group(function () {
         ->name('notifications.read');
 });
 
+// トップページ(書籍一覧)
+Route::get('/', function () {
+    return redirect()->route('books.index');
+});
+
 // 書籍一覧・詳細（ゲストアクセス可）
 Route::resource('books', BookController::class)
     ->only(['index', 'show']);
